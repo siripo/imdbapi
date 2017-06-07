@@ -17,7 +17,7 @@ def request_peli():
 	tree = html.fromstring(response.content)
 	
 	result={}
-	result["id"]=title_id
+	result["imdbID"]=title_id
 	#Capturo generos
 	aux=tree.xpath('//div[@class="title_wrapper"]//span[@itemprop="genre"]/text()')
 	result["Genre"]=", ".join(aux).strip()
