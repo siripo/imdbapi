@@ -9,14 +9,15 @@ app = Flask(__name__)
 @app.route('/')
 def request_peli():
 	
-	title = request.args.get('i')
-	if not title:
+	title_id = request.args.get('i')
+	if not title_id:
 		return "usage: xxx/?i=id"
 
-	response = requests.get('http://www.imdb.com/title/'+title)
+	response = requests.get('http://www.imdb.com/title/'+title_id)
 	tree = html.fromstring(response.content)
 	
 	result={}
+	result["id"]=title_id
 	#Capturo generos
 	aux=tree.xpath('//div[@class="title_wrapper"]//span[@itemprop="genre"]/text()')
 	result["Genre"]=", ".join(aux).strip()
@@ -36,7 +37,7 @@ def request_peli():
 	result["Released"]="".join(aux).strip()
 
 	aux=tree.xpath('//div[@id="titleDetails"]//time[@itemprop="duration"]/text()')
-	result["Runtime"]="".join(aux).strip()
+	result["Runtime"]="".join(aux[0:1]).strip()
 
 	aux=tree.xpath('//div[@class="credit_summary_item"]/span[@itemprop="director"]//span[@itemprop="name"]/text()')
 	result["Director"]="".join(aux).strip()
