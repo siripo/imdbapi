@@ -2,12 +2,18 @@ from flask import Flask
 from flask import jsonify
 import requests
 from lxml import html
+from flask import request
 
 app = Flask(__name__)
 
 @app.route('/')
 def request_peli():
-	response = requests.get('http://www.imdb.com/title/tt0111161')
+	
+	title = request.args.get('i')
+	if not title:
+		return "usage: xxx/?i=id"
+
+	response = requests.get('http://www.imdb.com/title/'+title)
 	tree = html.fromstring(response.content)
 	
 	result={}
